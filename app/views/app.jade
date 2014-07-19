@@ -1,0 +1,10 @@
+extends layout.jade
+block content
+	div Files
+		ul
+			for file in files
+				li
+					if file.isDirectory
+						a.directory(href="#{file.path}")= file.filename
+					else
+						a(href="#{file.path}")= file.filename

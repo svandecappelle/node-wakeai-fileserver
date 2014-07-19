@@ -1,0 +1,27 @@
+{
+	"name"	: "node-wakeai-fileserver",
+	"description"	: "A nodeJs implementation of a simple server file with grant access",
+	"homepage"	: "",
+	"keywords"	: ["files", "file-server"],
+	"author"	: "Steeve Vandecappelle <steeve.vandecappelle@gmail.com>",
+	"dependencies": {
+		"express"	: ">=4.0.0",
+		"log4js"	: ">=0.6.6",
+		"jade"	: "*",
+		"nconf"	:	"~0.6.7",
+		"async"	: "~0.2.8",
+		"express-session":	"1.2.0",
+		"passport"	: "~0.2.0",
+		"passport-local"	: "0.1.6",
+		"body-parser"	: "~1.0.0",
+		"cookie-parser"	:	"1.1.0",
+		"express-session":	"1.2.1",
+		"password-generator"	:	"0.2.2",
+		"nodemailer"	:	"0.7.0"
+	},
+	"bin"	: "./app.js",
+	"repository"	: {
+	"type" : "git"
+	},
+	"version"	: "0.0.1-alpha"
+}
