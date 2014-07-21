@@ -44,11 +44,12 @@ function start(){
     var session = require('express-session');
     var cookieParser = require('cookie-parser');
     var passport = require('passport');
+    var serveStatic = require('serve-static');
 
     // public PATHS
     app.set('views', __dirname + '/app/views');
     app.set('view engine', 'jade');
-    app.use(express.static(__dirname + '/app/public' ));
+    app.use(express.static(__dirname + '/app/public'));
     app.use(bodyParser());
     app.use(cookieParser()); // required before session.
     app.use(session({
@@ -68,7 +69,7 @@ function start(){
     }else{
         logger.info("Linked folder already exists");
     }
-    app.use(express.static(__dirname + '/' + nconf.get("shared-link-directory-name"), {hidden: true}));
+    app.use(serveStatic(__dirname + '/' + nconf.get("shared-link-directory-name"), {hidden: true}));
 
     require("./app/views/app")(app);
 
