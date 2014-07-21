@@ -1,10 +1,20 @@
 extends layout.jade
 block content
-	div Files
-		ul
+	div.pattern Files
+		ul.list.img-list
 			for file in files
 				li
 					if file.isDirectory
-						a.directory(href="#{file.path}")= file.filename
+						a.inner.directory(href="#{file.path}")
+							.li-img
+								img(src="http://bradfrost.github.com/this-is-responsive/patterns/images/fpo_square.png", alt="Image Alt Text")
+							.li-text
+								h4.li-head= file.filename
+									p.li-summary un text
 					else
-						a(href="#{file.path}")= file.filename
+						a.inner(href="#{file.path}")
+							.li-img
+								img(src="http://bradfrost.github.com/this-is-responsive/patterns/images/fpo_square.png", alt="Image Alt Text")
+							.li-text
+								h4.li-head= file.filename
+									p.li-summary un autre text

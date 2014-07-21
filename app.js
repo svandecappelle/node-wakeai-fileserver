@@ -48,7 +48,7 @@ function start(){
     // public PATHS
     app.set('views', __dirname + '/app/views');
     app.set('view engine', 'jade');
-    app.use(express.static(__dirname + '/' + nconf.get("shared-folder")));
+    app.use(express.static(__dirname + '/app/public' ));
     app.use(bodyParser());
     app.use(cookieParser()); // required before session.
     app.use(session({
@@ -59,6 +59,16 @@ function start(){
     app.use(passport.session());
 
     var middleware = require("./app/middleware");
+
+
+    var sharedFolder = nconf.get("shared-folder");
+    if (!fs.existsSync(nconf.get("shared-link-directory-name"))){
+        fs.symlinkSync(sharedFolder, path.resolve(__dirname,nconf.get("shared-link-directory-name")));
+        logger.info("Linked folder created");
+    }else{
+        logger.info("Linked folder already exists");
+    }
+    app.use(express.static(__dirname + '/' + nconf.get("shared-link-directory-name"), {hidden: true}));
 
     require("./app/views/app")(app);
 
