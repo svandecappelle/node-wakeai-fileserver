@@ -15,10 +15,10 @@ var nconf = require('nconf');
 nconf.argv().env();
 
 // Alternate configuration file support
-var configFile = __dirname + '/config.json',
+var configFile = application_root + '/config.json',
     configExists;
 if (nconf.get('config')) {
-    configFile = path.resolve(__dirname, nconf.get('config'));
+    configFile = path.resolve(application_root, nconf.get('config'));
 }
 configExists = fs.existsSync(configFile);
 
@@ -30,7 +30,7 @@ function loadConfig() {
     });
 
     nconf.defaults({
-        base_dir: __dirname,
+        base_dir: application_root,
         upload_url: '/uploads/'
     });
 }
@@ -47,9 +47,9 @@ function start(){
     var serveStatic = require('serve-static');
 
     // public PATHS
-    app.set('views', __dirname + '/app/views');
+    app.set('views', application_root + '/app/views');
     app.set('view engine', 'jade');
-    app.use(express.static(__dirname + '/app/public'));
+    app.use(express.static(application_root + '/app/public'));
     app.use(bodyParser());
     app.use(cookieParser()); // required before session.
     app.use(session({
@@ -64,12 +64,12 @@ function start(){
 
     var sharedFolder = nconf.get("shared-folder");
     if (!fs.existsSync(nconf.get("shared-link-directory-name"))){
-        fs.symlinkSync(sharedFolder, path.resolve(__dirname,nconf.get("shared-link-directory-name")));
+        fs.symlinkSync(sharedFolder, path.resolve(application_root,nconf.get("shared-link-directory-name")));
         logger.info("Linked folder created");
     }else{
         logger.info("Linked folder already exists");
     }
-    app.use(serveStatic(__dirname + '/' + nconf.get("shared-link-directory-name"), {hidden: true}));
+    app.use(serveStatic(application_root + '/' + nconf.get("shared-link-directory-name"), {hidden: true}));
 
     require("./app/views/app")(app);
 
