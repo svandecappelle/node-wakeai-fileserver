@@ -25,10 +25,44 @@ a img {
   outline: 0;
 }
 
+.header {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 30px;
+  border-bottom: 1px solid black;
+  background: teal;
+}
+
+.search {
+  height: 30px;
+}
+
+.search i.searchIcon {
+  padding-left: 5px;
+  color: #FFF;
+  text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.15);
+}
+
+.search input.searchInput {
+  width: 120px;
+  margin: 4px 5px;
+  padding: 1px 0;
+  height: 20px;
+  transition: width 0.3s ease-in-out;
+}
+
+.search input:focus {
+   width: 240px;
+}
+
 .pattern {
   background: #f7f7f7;
   border-bottom: 1px solid #808080;
   overflow: hidden;
+
+  margin-top: 31px;
 }
 .pattern-description h1 {
   font-size: 3.4em;
@@ -45,6 +79,10 @@ a img {
   margin-bottom: 1em;
 }
 
+ul.list {
+  padding: 0 2em;
+}
+
 .list li {
   background: url(images/icon_arrow_right.png) no-repeat 97% 50%;
   border-bottom: 1px solid #ccc;
@@ -52,6 +90,15 @@ a img {
   border-collapse: collapse;
   width: 100%;
 }
+
+.list li[hidden] {
+  display: none;
+}
+
+.list li:last-child {
+  border-bottom: 0;
+}
+
 .inner {
   display: table-row;
   overflow: hidden;

@@ -20,6 +20,7 @@ module.exports = function (app, options) {
 		files.forEach(function(file){
 			var relativePathFile = requestedDirectory+'/'+file;
 			var viewRelativePathFile = '/';
+			var fileSize;
 
 			var stats = fs.statSync(relativePathFile);
 			
@@ -32,8 +33,39 @@ module.exports = function (app, options) {
 			if (stats.isDirectory()){
 				viewRelativePathFile += '/';
 			}
+
+			// Format file size
+			if(stats.size) {
+				var tmplength = stats.size;
+				var dec = 0;
+				var type = " bytes";
+				var floor = Math.floor(tmplength / 1000);
+				if (floor > 0) {
+					dec = (tmplength % 1000);
+					tmplength = floor;
+					type = "kb";
+					floor = Math.floor(tmplength / 1000);
+					if (floor > 0) {
+						dec = (tmplength % 1000);
+						tmplength = floor;
+						type = "Mb";
+						floor = Math.floor(tmplength / 1000);
+						if (floor > 0) {
+							dec = (tmplength % 1000);
+							tmplength = floor;
+							type = "Gb";
+						}
+					}
+				}
+				if(dec > 0) {
+					fileSize =  tmplength + ("," + dec).substring(0,3) + type;
+				} else {
+					fileSize =  tmplength + type;
+				}
+				
+			}
 			
-			viewFiles.push({filename: file, isDirectory: stats.isDirectory(), path: viewRelativePathFile});
+			viewFiles.push({filename: file, isDirectory: stats.isDirectory(), path: viewRelativePathFile, size: fileSize});
 		});
     	middleware.render('app', req, res, {files: viewFiles});
     });

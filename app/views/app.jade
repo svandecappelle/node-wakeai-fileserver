@@ -1,7 +1,11 @@
 extends layout.jade
 block content
-	div.pattern Files
-		ul.list.img-list
+	div.header
+		div.search
+			i.searchIcon.fa.fa-search
+			input#search.searchInput(type="text", placeholder="Search...", onkeyup="searchInList(event)")
+	div.pattern
+		ul#items.list.img-list
 			for file in files
 				li
 					if file.isDirectory
@@ -10,11 +14,11 @@ block content
 								img(src="http://bradfrost.github.com/this-is-responsive/patterns/images/fpo_square.png", alt="Image Alt Text")
 							.li-text
 								h4.li-head= file.filename
-									p.li-summary un text
+								p.li-summary un text
 					else
 						a.inner(href="#{file.path}")
 							.li-img
 								img(src="http://bradfrost.github.com/this-is-responsive/patterns/images/fpo_square.png", alt="Image Alt Text")
 							.li-text
 								h4.li-head= file.filename
-									p.li-summary un autre text
+								p.li-summary= file.size
