@@ -49,7 +49,7 @@ function start(){
     // public PATHS
     app.set('views', application_root + '/app/views');
     app.set('view engine', 'jade');
-    app.use(express.static(application_root + '/app/public'));
+    app.use('/public', express.static(application_root + '/app/public'));
     app.use(bodyParser());
     app.use(cookieParser()); // required before session.
     app.use(session({
@@ -61,18 +61,22 @@ function start(){
 
     var middleware = require("./app/middleware");
 
-
-    var sharedFolder = nconf.get("shared-folder");
-    if (!fs.existsSync(nconf.get("shared-link-directory-name"))){
-        fs.symlinkSync(sharedFolder, path.resolve(application_root,nconf.get("shared-link-directory-name")));
+    var localSharedFolder = path.resolve(application_root, nconf.get("shared-link-directory-name"));
+    var distantSharedFolder = nconf.get("shared-folder");
+    if (!fs.existsSync(localSharedFolder)){
+        fs.symlinkSync(distantSharedFolder, localSharedFolder, 'dir');
         logger.info("Linked folder created");
     }else{
         logger.info("Linked folder already exists");
     }
-    app.use(serveStatic(application_root + '/' + nconf.get("shared-link-directory-name"), {hidden: true}));
+    app.use('/files',serveStatic(localSharedFolder, {dotfiles: 'allow'}));
 
     require("./app/views/app")(app);
 
+    app.get('/', function(req, res) {
+       res.redirect('/files');
+    });
+/*
     app.use(function(req, res, next){
         res.status(404);
 
@@ -92,8 +96,6 @@ function start(){
         res.type('txt').send('Not found');
     });
 
-
-
     app.use(function(err, req, res, next) {
         console.log(err);
         if (err.status === 404) {
@@ -101,7 +103,7 @@ function start(){
         } else {
             middleware.render('500', req, res, { error: {status: 500, message: "Erreur interne: " + err, stack: err.stack}});
         }
-    });
+    });*/
 
     // LISTEN PORT APP
     var served = app.listen(nconf.get('port'));

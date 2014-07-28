@@ -6,7 +6,7 @@ module.exports = function (app, options) {
 	var nconf = require("nconf");
 
 
-	app.get('/:file(*)', function (req, res) {
+	app.get('/files/:file(*)', function (req, res) {
 
 		var sharedDirectory = nconf.get("shared-link-directory-name");
 		var requestedDirectory = sharedDirectory;
@@ -14,64 +14,52 @@ module.exports = function (app, options) {
 		if (req.params.file){
 			requestedDirectory = (sharedDirectory + "/" + req.params.file);
 		}
-		var files = fs.readdirSync(requestedDirectory);
-		
-		var viewFiles = [];
-		files.forEach(function(file){
-			var relativePathFile = requestedDirectory+'/'+file;
-			var viewRelativePathFile = '/';
-			var fileSize;
+		if(fs.existsSync(requestedDirectory)) {
+			var files = fs.readdirSync(requestedDirectory);
 
-			var stats = fs.statSync(relativePathFile);
-			
-			if (req.params.file !== ""){
-				viewRelativePathFile += req.params.file + file;
-			}else{
-				viewRelativePathFile += file;
-			}
+			var viewFiles = [];
+			files.forEach(function(file){
+				var relativePathFile = requestedDirectory+'/'+file;
+				var viewRelativePathFile = '';
+				var fileSize;
 
-			if (stats.isDirectory()){
-				viewRelativePathFile += '/';
-			}
+				var stats = fs.statSync(relativePathFile);
 
-			// Format file size
-			if(stats.size) {
-				var tmplength = stats.size;
-				var dec = 0;
-				var type = " bytes";
-				var floor = Math.floor(tmplength / 1000);
-				if (floor > 0) {
-					dec = (tmplength % 1000);
-					tmplength = floor;
-					type = "kb";
-					floor = Math.floor(tmplength / 1000);
-					if (floor > 0) {
-						dec = (tmplength % 1000);
-						tmplength = floor;
-						type = "Mb";
-						floor = Math.floor(tmplength / 1000);
-						if (floor > 0) {
-							dec = (tmplength % 1000);
-							tmplength = floor;
-							type = "Gb";
+				if (req.params.file !== ""){
+					viewRelativePathFile += './' + file;
+				}else{
+					viewRelativePathFile += './' +file;
+				}
+
+				if (stats.isDirectory()){
+					viewRelativePathFile += '/';
+				} else {
+					var tmplength = stats.size;
+					var type = " bytes";
+					if (Math.floor(tmplength / 1024) > 0) {
+						tmplength = tmplength / 1024;
+						type = "kb";
+						if (Math.floor(tmplength / 1024) > 0) {
+							tmplength = tmplength / 1024;
+							type = "Mb";
+							if (Math.floor(tmplength / 1024) > 0) {
+								tmplength = tmplength / 1024;
+								type = "Gb";
+							}
 						}
 					}
+					fileSize = Math.round(tmplength*100)/100 + type;
 				}
-				if(dec > 0) {
-					fileSize =  tmplength + ("," + dec).substring(0,3) + type;
-				} else {
-					fileSize =  tmplength + type;
-				}
-				
-			}
-			
-			viewFiles.push({filename: file, isDirectory: stats.isDirectory(), path: viewRelativePathFile, size: fileSize});
-		});
-    	middleware.render('app', req, res, {files: viewFiles});
-    });
+				viewFiles.push({filename: file, isDirectory: stats.isDirectory(), path: viewRelativePathFile, size: fileSize});
+			});
+			middleware.render('app', req, res, {isRoot: !req.params.file, files: viewFiles});
+		} else {
+			middleware.render('404', req, res);
+		}
+	});
 
-    app.post("/:file(*)", function (req, res){
-    	/*
+	app.post("/:file(*)", function (req, res){
+		/*
 		var async, handler, streamingResponse;
 
 		streamingResponse = require("./streaming-zip");
@@ -107,5 +95,5 @@ module.exports = function (app, options) {
 			})(this));
 		};
 		handler(req, res);*/
-    });
+	});
 };

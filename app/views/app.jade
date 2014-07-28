@@ -1,8 +1,12 @@
 extends layout.jade
 block content
-	div.header
-		div.search
+	ul.header
+		if !isRoot
+			li
+				a.backIcon.fa.fa-reply(href="..")
+		li
 			i.searchIcon.fa.fa-search
+		li
 			input#search.searchInput(type="text", placeholder="Search...", onkeyup="searchInList(event)")
 	div.pattern
 		ul#items.list.img-list
