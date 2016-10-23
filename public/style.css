@@ -1,0 +1,253 @@
+body{
+  background-color: #556E7E;
+  background-image: url("/img/background.jpg");
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+  font-familly: Arial, Helvetica, sans-serif;
+}
+.login .form{
+  position: absolute;
+  padding: 30px;
+  background-color: rgba(210, 210, 210, 0.50);
+  left: 300px;
+  top: 50%;
+  height: 110px;
+  transform: translate(-50%,-50%);
+  color: #333;
+  text-align: center;
+  font-size: 16px;
+  padding-top: 20px;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.login .form input[type=text],input[type=password]{
+  border: 1px solid #aaa;
+  padding: 10px 20px;
+  width: 353px;
+  margin-top: 15px;
+  border-radius: 5px;
+  margin-left: 37px;
+  margin-right: 10px;
+  display: inline-block;
+  height: 42px;
+}
+.login .form input[type=submit]{
+  margin-top: 30px;
+  background-color: #7DD9D5;
+  border: none;
+  font-size: 12px;
+  padding: 10px 40px;
+  color: white;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.form .title{
+}
+.inline-next-form{
+  position: absolute;
+  transition: all linear 0.5s;
+  padding: 0;
+  left: 0;
+  text-align: left;
+  margin-right: 10px;
+  overflow: hidden;
+}
+.inline-next-form .fa.fa-angle-right{
+  position: fixed;
+  right: 15px;
+  margin-top: 19px;
+  padding: 10px;
+  cursor: pointer;
+}
+.inline-next-form .fa.fa-angle-right:hover{
+  color: black;
+}
+
+nav.menu{
+  color: white;
+  width: 45px;
+  height: 100%;
+  float: left;
+  overflow: hidden;
+  box-sizing: border-box;
+  transition: all 0.3s ease 0s;
+  -moz-transition: all 0.3s ease 0s;
+  -webkit-transition: all 0.3s ease 0s;
+  position: fixed;
+  z-index: 1000;
+}
+
+nav.menu{
+  background-color: #1a2226;
+}
+
+nav .menu{
+  margin-top: 20px;
+}
+
+nav a{
+  color: white;
+  text-decoration: none;
+  overflow: hidden;
+  transition: all 0.3s ease 0s;
+  -moz-transition: all 0.3s ease 0s;
+  -webkit-transition: all 0.3s ease 0s;
+  outline: none;
+}
+
+nav a:hover{
+  color: #A0FC55;
+  text-decoration: none;
+  display: block;
+}
+
+
+nav a i{
+  margin-bottom: 10px;
+  font-size: 17pt;
+}
+
+nav a span{
+  padding-left: 16px;
+  transition: all 0.3s ease 0s;
+  -moz-transition: all 0.3s ease 0s;
+  -webkit-transition: all 0.3s ease 0s;
+}
+
+/*
+TODO check if this is really awesome
+nav:hover{
+  width: 130px;
+}
+*/
+
+nav:hover span{
+  transition: all 0.3s ease 0s;
+  -moz-transition: all 0.3s ease 0s;
+  -webkit-transition: all 0.3s ease 0s;
+}
+
+
+.open > .dropdown-menu {
+  display: block;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0px;
+  z-index: 1000;
+  display: none;
+  float: left;
+  min-width: 160px;
+  padding: 5px 0px;
+  margin: 2px 0px 0px;
+  list-style: none outside none;
+  font-size: 14px;
+  background-color: #FFF;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 0px;
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.176);
+  background-clip: padding-box;
+}
+
+#header .navbar-right .dropdown-menu {
+  left: auto;
+  right: 0px;
+}
+
+#header .navbar-nav > li > .dropdown-menu {
+  margin-top: 0px;
+  border-top-right-radius: 0px;
+  border-top-left-radius: 0px;
+}
+
+.dropdown-toggle{
+  cursor: pointer;
+}
+.nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
+  background-color: inherit !important;
+}
+
+#header{
+  height: 50px;
+  line-height: 50px;
+  color: #fff;
+  background: repeat scroll 0px 0px #1a2226;
+  border: none;
+}
+
+#header>.nav>ul>li>a, #header>.navbar-header>nav>ul>li>a{
+  color: #fff;
+  height: 50px;
+  padding: 0px 15px;
+}
+
+h1{
+  color: #F8F8F8;;
+  font-size: 1.5em;
+}
+
+h2{
+  color: #4a5a5a;
+  font-size: 1.3em;
+}
+
+#header .mini-title{
+  vertical-align: bottom;
+  font-size: 9pt;
+  margin-right: 10px;
+}
+
+#header nav.hidden-text{
+  height: 100%;
+}
+
+#header h2 {
+  color: #cacaca;
+}
+
+.nav>li{
+  display: inline-block;
+}
+
+.nav>li>a:focus, .nav>li>a:hover{
+  background-color: #EFABAB;
+}
+
+.navbar{
+  border: none;
+}
+
+ol, ul {
+  list-style-type: none;
+}
+
+.user-avatar{
+  height: 36px;
+}
+
+ul.list-group li{
+  margin-bottom: 3px;
+  background-color: rgba(255,255,255,0.8);
+}
+
+a.list-group-item{
+  background-color: transparent;
+}
+
+a.list-group-item i.fa{
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+a.folder{
+  color: #e98ff6;
+}
+
+a.list-group-item small.filesize{
+  margin-left: 5px;
+  font-size: 0.5em;
+}

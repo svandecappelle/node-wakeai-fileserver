@@ -1,6 +1,22 @@
 {
-    "port": "4242",
+    "port": "4000",
+    "hostname": "localhost",
+    "uploader": false,
+    "logLevel": "INFO",
+    "database": "redis",
+    "redis": {
+        "host": "127.0.0.1",
+        "port": "6379",
+        "password": "",
+        "database": "2"
+    },
+    "secret": "eba16c61-18db-471a-9406-6371d7e42f63",
+    "bcrypt_rounds": 12,
+    "gravatar": true,
+    "allowRegisteration": true,
+    
     "upload_path": "/uploads",
-    "shared-folder": "/home/svandecappelle",
-    "shared-link-directory-name": "./shared"
+    "shared-folder": "/home/mizore/",
+    "shared-link-directory-name": "./shared",
+    "show-hidden-file": false
 }

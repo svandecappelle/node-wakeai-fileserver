@@ -1,0 +1,39 @@
+extends layout/main
+
+block append header
+    include layout/header
+    
+block append navigation
+    include layout/navigation
+
+block append content
+    div(style="position: relative; margin-top: 50px;")
+        nav.navbar.navbar-default
+            .container-fluid
+                .collapse.navbar-collapse
+                    ul.nav.navbar-nav
+                        if !isRoot
+                            li
+                                a.backIcon(href="..")
+                                    i.fa.fa-reply
+                        li
+                            form.navbar-form.navbar-left
+                                .form-group
+                                    .input-group
+                                        i.input-group-addon.fa.fa-search
+                                        input#search.searchInput(type="text", placeholder="Search...", onkeyup="searchInList(event)")
+        div
+            ul.list-group(style="width:80%; margin:auto;")
+                if files
+                    for file in files
+                        li
+                            if file.isDirectory
+                                a.list-group-item.folder(href="#{file.path}")
+                                    i.fa.fa-folder-open-o
+                                    span.filename= file.filename
+                                    small.filesize= file.size
+                            else
+                                a.list-group-item(href="#{file.path}")
+                                    i.fa.fa-file-o
+                                    span.filename= file.filename
+                                    small.filesize= file.size

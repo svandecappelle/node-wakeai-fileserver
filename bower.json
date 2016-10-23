@@ -1,0 +1,23 @@
+{
+  "name": "webmailer",
+  "description": "Web mailer in nodejs",
+  "main": "",
+  "authors": [
+    "[object Object]"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "html5",
+    "mail",
+    "web",
+    "webmail",
+    "browser"
+  ],
+  "homepage": "https://github.com/svandecappelle/node-webmailer",
+  "private": true,
+  "dependencies": {
+    "jquery": "^3.1.1",
+    "font-awesome-css": "^4.0.3",
+    "bootstrap": "^3.3.7"
+  }
+}

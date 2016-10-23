@@ -1,0 +1,9 @@
+extends ../layout/main
+block append content
+	.login 
+		form.form(method='post')
+			div.title You need to sign in or sign up before continuing.
+			div.inline-next-form
+				input.form-control(type="text", name="username", placeholder="Username")
+				input.form-control(type="password", name="password", placeholder="Password")
+				i.fa.fa-angle-right(aria-hidden="true")

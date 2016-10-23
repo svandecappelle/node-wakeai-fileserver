@@ -1,4 +1,2 @@
-node-wakeai-fileserver
-======================
-
-A share file server in nodejs
+# node-webmailer
+Web mail written in nodejs

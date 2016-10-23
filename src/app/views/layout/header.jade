@@ -1,0 +1,56 @@
+#header.navbar.navbar-default.navbar-fixed-top.header(style="padding-left: 25px;",role="navigation")
+  h1(style="float:left;margin:0px;")
+    a.header-link(href="/")
+      // include logo
+  span.mini-title(style="float:left", data-toggle="popover", data-trigger="hover", data-placement="bottom", data-content="The open-source media streaming application") v0.0.1-beta
+  div.navbar-header
+    nav.hidden-text.navbar-collapse.collapse.navbar-ex1-collapse(style="float:left; width: auto;")
+      ul.nav.navbar.varbar-nav.pull-left
+        li.nav-home
+          a.view(href="/", title="Acceuil", data-view="audio")
+            i.fa.fa-home
+            span.text Acceuil
+        if !session.user.isAnonymous && session.user.isAdmin
+          li.nav-cog
+            a.view(href="/admin", title="Administration", data-view='admin')
+              i.fa.fa-cog
+              span.text Admin
+  div.nav.navbar-nav.navbar-right.pull-right(style="margin-right: 10px;")
+    ul
+      unless session.user.isAnonymous
+        li.dropdown(style="float: left;")
+          a.dropdown-toggle#notif_dropdown(data-toggle="dropdown", data-original-title="Notifications")
+            i.fa.fa-fw.fa-bell-o(title="Notifications")
+          ul.dropdown-menu(role="menu", aria-labelledby="dropdownMenu")
+            if session.notifications.count > 0
+              li
+                a(href="all") Tous
+              li.divider
+                each notif in session.notifications.datas
+                  li
+                    a(href="/notification")= notif
+
+      li.dropdown(style="float: left; margin-left: 5px;")
+        a.dropdown-toggle(data-toggle="dropdown", data-original-title="Profile")
+          if session.user.avatar
+            img.user-avatar(src="/user/#{session.user.username}/avatar")
+          else
+            if session.user.isAnonymous
+              i.fa.fa-fw.fa-sign-in
+            else
+              i.fa.fa-fw.fa-user
+        ul.dropdown-menu.user-status(role="menu")
+          if session.user.isAnonymous
+            li
+              a.view(href="/login", data-view="login")
+                span Connection
+            li
+              a.view(href="/register", data-view="register")
+                span Register
+          else
+            li
+              a.view(href="/user/#{session.user.username}/info", data-view="user/#{session.user.username}/info")
+                  i.fa.fa-circle.status.online
+                  span#username(style="margin-left:10px;") #{session.user.username}
+            li
+              a(href="/logout") Deconnection

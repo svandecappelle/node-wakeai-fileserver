@@ -1,113 +1,95 @@
+/*jslint node: true */
 var application_root = __dirname,
-        express = require('express'),
-        path = require('path'),
-        http = require('http');
-log4js = require("log4js");
-var app = express();
-
-var fs = require('fs'),
+    express = require('express'),
+    path = require('path'),
+    http = require('http'),
+    log4js = require("log4js"),
+    app = express(),
+    fs = require('fs'),
     os = require('os'),
     logger = require('log4js').getLogger('Server'),
     path = require('path'),
-    pkg = require('./package.json');
+    pkg = require('./package.json'),
+    nconf = require('nconf');
 
-var nconf = require('nconf');
-nconf.argv().env();
+process.title = "Webmailer";
 
-// Alternate configuration file support
-var configFile = application_root + '/config.json',
-    configExists;
-if (nconf.get('config')) {
-    configFile = path.resolve(application_root, nconf.get('config'));
-}
-configExists = fs.existsSync(configFile);
+if (process.argv[2] === "dev"){
+  logger.info("entering dev mode");
+  log4js.configure('logger-dev.json', {});
 
-start();
-
-function loadConfig() {
-    nconf.file({
-        file: configFile
-    });
-
-    nconf.defaults({
-        base_dir: application_root,
-        upload_url: '/uploads/'
-    });
+} else {
+  log4js.configure('logger.json', {});
 }
 
-function start(){
+(function (ApplicationRoot) {
+    "use strict";
+    ApplicationRoot.preload = function () {
+        nconf.argv().env();
 
-    // LOADING CONFIGURATION FILE
-    loadConfig();
-
-    var bodyParser = require('body-parser');
-    var session = require('express-session');
-    var cookieParser = require('cookie-parser');
-    var passport = require('passport');
-    var serveStatic = require('serve-static');
-
-    // public PATHS
-    app.set('views', application_root + '/app/views');
-    app.set('view engine', 'jade');
-    app.use('/public', express.static(application_root + '/app/public'));
-    app.use(bodyParser());
-    app.use(cookieParser()); // required before session.
-    app.use(session({
-        secret: 'keyboard cat',
-        proxy: true // if you do SSL outside of node.
-    }));
-    app.use(passport.initialize());
-    app.use(passport.session());
-
-    var middleware = require("./app/middleware");
-
-    var localSharedFolder = path.resolve(application_root, nconf.get("shared-link-directory-name"));
-    var distantSharedFolder = nconf.get("shared-folder");
-    if (!fs.existsSync(localSharedFolder)){
-        fs.symlinkSync(distantSharedFolder, localSharedFolder, 'dir');
-        logger.info("Linked folder created");
-    }else{
-        logger.info("Linked folder already exists");
-    }
-    app.use('/files',serveStatic(localSharedFolder, {dotfiles: 'allow'}));
-
-    require("./app/views/app")(app);
-
-    app.get('/', function(req, res) {
-       res.redirect('/files');
-    });
-/*
-    app.use(function(req, res, next){
-        res.status(404);
-
-        // respond with html page
-        if (req.accepts('html')) {
-            middleware.render('404', req, res, { url: req.url });
-        return;
+        // Alternate configuration file support
+        var configFile = __dirname + '/config.json',
+            configExists;
+        if (nconf.get('config')) {
+            configFile = path.resolve(__dirname, nconf.get('config'));
         }
+        configExists = fs.existsSync(configFile);
 
-        // respond with json
-        if (req.accepts('json')) {
-            res.send({ error: 'Not found' });
-        return;
-        }
-
-        // default to plain-text. send()
-        res.type('txt').send('Not found');
-    });
-
-    app.use(function(err, req, res, next) {
-        console.log(err);
-        if (err.status === 404) {
-            middleware.render('404', req, res, { status: 404 });
+        if (!configExists){
+            logger.error("configuration file doesn't exists");
+            process.exit(1);
         } else {
-            middleware.render('500', req, res, { error: {status: 500, message: "Erreur interne: " + err, stack: err.stack}});
+            nconf.file({
+                file: configFile
+            });
+
+            nconf.defaults({
+                base_dir: __dirname
+            });
         }
-    });*/
 
-    // LISTEN PORT APP
-    var served = app.listen(nconf.get('port'));
+        return this;
+    };
 
-    logger.info("Ready to serve on " + nconf.get('port') + " port");
+    ApplicationRoot.start = function (callback) {
+        var bodyParser = require('body-parser'),
+            session = require('express-session'),
+            cookieParser = require('cookie-parser'),
+            passport = require('passport'),
+            morgan  = require('morgan');
 
-}
+        // public PATHS
+        app.set('views', __dirname + '/src/app/views');
+        app.set('view engine', 'jade');
+        app.use(express.static(__dirname + '/public'));
+        app.use(bodyParser());
+        app.use(bodyParser.json());
+        app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+          extended: true
+        }));
+        app.use(cookieParser()); // required before session.
+        app.use(session({
+            secret: 'keyboard cat',
+            proxy: true // if you do SSL outside of node.
+        }));
+        app.use(passport.initialize());
+        app.use(passport.session());
+        var httplog = morgan(':req[X-Forwarded-For] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"', {
+          "stream": {
+            write: function(str) {
+              logger.debug(str.trim());
+            }
+          }
+        });
+        app.use(httplog);
+
+        // ROUTES
+        var application = require('./src/app/');
+        application.load(app, callback);
+        application.start();
+    };
+
+    if (process.window === undefined){
+      ApplicationRoot.preload().start();
+    }
+}(exports));
