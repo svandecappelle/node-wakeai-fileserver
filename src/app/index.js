@@ -5,7 +5,6 @@ var nconf = require("nconf"),
 
 var routes = require('./routes');
 
-logger.setLevel(nconf.get('logLevel'));
 
 (function(Application) {
 	Application.load = function (app, callback) {

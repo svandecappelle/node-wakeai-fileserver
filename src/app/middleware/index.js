@@ -13,8 +13,6 @@
         gravatar = require("gravatar"),
         identicon;
 
-    logger.setLevel(nconf.get("logLevel"));
-
     try {
         identicon = require('identicon');
     } catch (expect) {
@@ -71,7 +69,7 @@
         } else {
             rendering();
         }
-        
+
     };
 
     Middleware.json = function (req, res, json) {

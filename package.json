@@ -57,8 +57,7 @@
     "xregexp": "~2.0.0"
   },
   "scripts": {
-    "start": "node app.js dev",
-    "dev-start": "node app.js dev"
+    "start": "node app.js"
   },
   "name": "webmailer"
 }

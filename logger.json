@@ -1,14 +1,13 @@
 {
-  "appenders": [
-    {
-      "type": "file",
-      "filename": "logs/output.log",
-      "maxLogSize": 20480,
-      "backups": 3
-    },
-    { "type": "console" }
-  ],
-  "levels": {
-      "[all]": "DEBUG"
+  "appenders": {
+    "console": {
+      "type": "console" 
+    }
+  },
+  "categories":{
+    "default": {
+        "appenders": ["console"],
+        "level": "INFO"
+    }
   }
 }

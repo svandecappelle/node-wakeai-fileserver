@@ -1,5 +1,5 @@
 {
-    "port": "4000",
+    "port": "4444",
     "hostname": "localhost",
     "uploader": false,
     "logLevel": "INFO",
@@ -16,7 +16,7 @@
     "allowRegisteration": true,
     
     "upload_path": "/uploads",
-    "shared-folder": "/home/mizore/",
-    "shared-link-directory-name": "./shared",
+    "shared-folder": "/home/svandecappelle/downloads-torrents/",
+    "shared-link-directory-name": "./done",
     "show-hidden-file": false
 }

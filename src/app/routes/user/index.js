@@ -9,8 +9,7 @@ var logger = require('log4js').getLogger("AdministratorsRoutes"),
     meta = require("./../../meta"),
     user = require("./../../model/user"),
     mailer = require("./../../emailer");
-    
-logger.setLevel(nconf.get('logLevel'));
+
 
 (function(UsersRoutes) {
 
@@ -36,7 +35,7 @@ logger.setLevel(nconf.get('logLevel'));
         });
         app.get('/files/:file(*)', function (req, res) {
             logger.info("Client access to index [" + req.ip + "]");
-            
+
 
             var sharedDirectory = nconf.get("shared-folder");
             var requestedDirectory = sharedDirectory;
@@ -116,7 +115,7 @@ logger.setLevel(nconf.get('logLevel'));
                 filename: "my_download.zip",
                 files: files
             });
-            
+
             return streaming.pipe(res, (function(_this) {
                 return function(err) {
                     if (err) {
